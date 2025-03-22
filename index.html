@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Guessing Contest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Home Page -->
+        <div id="home-page" class="flex min-h-screen flex-col items-center justify-center">
+            <div class="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm">
+                <div class="flex flex-col items-center justify-center">
+                    <h1 class="text-6xl font-bold text-center mb-8">
+                        Song Guessing Contest
+                    </h1>
+                    <p class="text-xl text-center mb-12">
+                        Welcome to the ultimate song guessing challenge! Test your music knowledge by guessing songs from different genres.
+                        Play with friends and see who has the best ear for music!
+                    </p>
+                    <button 
+                        id="start-game-btn"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors duration-300"
+                    >
+                        Start Game
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Players Page -->
+        <div id="players-page" class="hidden flex min-h-screen flex-col items-center justify-center">
+            <div class="z-10 max-w-5xl w-full items-center justify-center">
+                <div class="flex flex-col items-center justify-center">
+                    <h1 class="text-4xl font-bold text-center mb-8">
+                        Enter Player Names
+                    </h1>
+                    
+                    <div id="players-container" class="w-full max-w-md">
+                        <div class="flex items-center mb-4">
+                            <input
+                                type="text"
+                                placeholder="Player 1"
+                                class="player-input flex-grow p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <input
+                                type="text"
+                                placeholder="Player 2"
+                                class="player-input flex-grow p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                    </div>
+                    
+                    <p id="players-error" class="text-red-500 mb-4 hidden">All player names must be filled</p>
+                    
+                    <div class="flex justify-between mt-6 w-full max-w-md">
+                        <button
+                            id="add-player-btn"
+                            class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Add Player
+                        </button>
+                        
+                        <button
+                            id="continue-to-genres-btn"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Continue to Genres
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Genre Page -->
+        <div id="genre-page" class="hidden flex min-h-screen flex-col items-center justify-center">
+            <div class="z-10 max-w-5xl w-full items-center justify-center">
+                <div class="flex flex-col items-center justify-center">
+                    <h1 class="text-4xl font-bold text-center mb-8">
+                        Select a Music Genre
+                    </h1>
+                    
+                    <div id="genres-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl mb-8">
+                        <div 
+                            data-genre="pop"
+                            class="genre-item p-6 border rounded-lg cursor-pointer transition-all duration-300 border-gray-300 hover:border-blue-300 hover:bg-blue-50"
+                        >
+                            <h2 class="text-2xl font-bold mb-2">Pop</h2>
+                            <p class="text-gray-600">Popular music with catchy melodies and rhythms</p>
+                        </div>
+                        <div 
+                            data-genre="rock"
+                            class="genre-item p-6 border rounded-lg cursor-pointer transition-all duration-300 border-gray-300 hover:border-blue-300 hover:bg-blue-50"
+                        >
+                            <h2 class="text-2xl font-bold mb-2">Rock</h2>
+                            <p class="text-gray-600">Guitar-driven music with strong beats and vocals</p>
+                        </div>
+                        <div 
+                            data-genre="hiphop"
+                            class="genre-item p-6 border rounded-lg cursor-pointer transition-all duration-300 border-gray-300 hover:border-blue-300 hover:bg-blue-50"
+                        >
+                            <h2 class="text-2xl font-bold mb-2">Hip Hop</h2>
+                            <p class="text-gray-600">Rhythmic music with rapping and beats</p>
+                        </div>
+                        <div 
+                            data-genre="country"
+                            class="genre-item p-6 border rounded-lg cursor-pointer transition-all duration-300 border-gray-300 hover:border-blue-300 hover:bg-blue-50"
+                        >
+                            <h2 class="text-2xl font-bold mb-2">Country</h2>
+                            <p class="text-gray-600">Music with roots in folk, blues and western styles</p>
+                        </div>
+                        <div 
+                            data-genre="electronic"
+                            class="genre-item p-6 border rounded-lg cursor-pointer transition-all duration-300 border-gray-300 hover:border-blue-300 hover:bg-blue-50"
+                        >
+                            <h2 class="text-2xl font-bold mb-2">Electronic</h2>
+                            <p class="text-gray-600">Computer-generated music with synthesized sounds</p>
+                        </div>
+                    </div>
+                    
+                    <button
+                        id="start-game-genre-btn"
+                        disabled
+                        class="font-bold py-3 px-6 rounded-lg text-white text-xl bg-gray-400 cursor-not-allowed"
+                    >
+                        Start Game
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Page -->
+        <div id="game-page" class="hidden flex min-h-screen flex-col items-center p-8">
+            <div class="w-full max-w-4xl">
+                <h1 class="text-4xl font-bold text-center mb-8">
+                    Song Guessing Contest
+                </h1>
+                
+                <!-- Scoreboard -->
+                <div class="bg-gray-100 p-6 rounded-lg mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Scoreboard</h2>
+                    <div id="scoreboard" class="grid grid-cols-2 gap-4">
+                        <!-- Scoreboard will be populated dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Game Controls -->
+                <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                    <div class="flex flex-col items-center mb-6">
+                        <h2 id="genre-display" class="text-2xl font-bold mb-2">
+                            Select a genre
+                        </h2>
+                        
+                        <div id="game-controls" class="w-full hidden">
+                            <div class="flex justify-between items-center mb-4">
+                                <button
+                                    id="play-btn"
+                                    class="px-4 py-2 rounded font-bold bg-green-500 hover:bg-green-600 text-white"
+                                >
+                                    Play
+                                </button>
+                                
+                                <button
+                                    id="buzzer-btn"
+                                    disabled
+                                    class="px-4 py-2 rounded font-bold bg-gray-400 cursor-not-allowed"
+                                >
+                                    Buzzer (Space)
+                                </button>
+                                
+                                <button
+                                    id="reveal-btn"
+                                    class="px-4 py-2 rounded font-bold bg-blue-500 hover:bg-blue-600 text-white"
+                                >
+                                    Reveal Song
+                                </button>
+                            </div>
+                            
+                            <div id="song-reveal" class="bg-blue-50 p-4 rounded-lg mb-4 hidden">
+                                <h3 id="song-title" class="text-xl font-bold"></h3>
+                                <p id="song-artist" class="text-gray-700"></p>
+                            </div>
+                            
+                            <div id="add-point-container" class="mt-4 hidden">
+                                <h3 class="text-lg font-semibold mb-2">Add point to:</h3>
+                                <div id="player-points-btns" class="flex flex-wrap gap-2">
+                                    <!-- Player point buttons will be added dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p id="game-instruction" class="text-gray-600 mb-4">Click "Next Song" to start the game</p>
+                        
+                        <button
+                            id="next-song-btn"
+                            class="mt-6 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg"
+                        >
+                            Next Song
+                        </button>
+                    </div>
+                    
+                    <div class="text-center text-sm text-gray-500">
+                        <p>Press the space bar to use the buzzer when you recognize the song!</p>
+                    </div>
+                </div>
+                
+                <!-- YouTube Player -->
+                <div id="youtube-player" class="hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YouTube API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    
+    <!-- Song Data -->
+    <script src="songs.js"></script>
+    
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html>
