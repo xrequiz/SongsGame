@@ -36,17 +36,17 @@ const songData = {
     { id: 'PMivT7MJ41M', title: 'Straight Outta Compton', artist: 'NWA' },
     { id: 'fPO76Jlnz6c', title: 'Alright', artist: 'Kendrick Lamar' }
   ],
-  country: [
-    { id: 'JXRN_LkCa_o', title: 'Cruise', artist: 'Florida Georgia Line' },
-    { id: 'BKZqGJONH68', title: 'Meant to Be', artist: 'Bebe Rexha ft. Florida Georgia Line' },
-    { id: 'mWrd5yxIzk4', title: 'Body Like A Back Road', artist: 'Sam Hunt' },
-    { id: 'Mdh2p03cRfw', title: 'Chicken Fried', artist: 'Zac Brown Band' },
-    { id: 'WaSy8yy-mr8', title: 'Before He Cheats', artist: 'Carrie Underwood' },
-    { id: 'oOlDewpCfZQ', title: 'Wagon Wheel', artist: 'Darius Rucker' },
-    { id: 'X5z-jjWyAJQ', title: 'Dirt On My Boots', artist: 'Jon Pardi' },
-    { id: 'Vd2qlMV-seQ', title: 'Tennessee Whiskey', artist: 'Chris Stapleton' },
-    { id: 'FY8SwIvxj8o', title: 'Take Me Home, Country Roads', artist: 'John Denver' },
-    { id: 'aJrhh-9Wl6o', title: 'The Dance', artist: 'Garth Brooks' }
+  mizrahit: [
+    { id: 'bSnO_SUm0OQ', title: 'Shlomo Artzi - Ahavtiha', artist: 'Shlomo Artzi' },
+    { id: 'k6Ux8jY9UBk', title: 'Eyal Golan - Ze Ani', artist: 'Eyal Golan' },
+    { id: 'Z0m4bGZ7B9s', title: 'Sarit Hadad - Shema Israel', artist: 'Sarit Hadad' },
+    { id: 'nMQw29nfzpg', title: 'Omer Adam - Tel Aviv', artist: 'Omer Adam' },
+    { id: 'RpF6p_Hm_Do', title: 'Eden Ben Zaken - Malkat Hashoshanim', artist: 'Eden Ben Zaken' },
+    { id: 'YZY4QGl1XN4', title: 'Moshe Peretz - Hashem Melech', artist: 'Moshe Peretz' },
+    { id: 'YxZ5B-K5Vlo', title: 'Lior Narkis - Milim Yafot Me'eleh', artist: 'Lior Narkis' },
+    { id: 'iP-86de-Nb4', title: 'Dudu Aharon - Shnei Meshugaim', artist: 'Dudu Aharon' },
+    { id: 'vT-7bNH2uxM', title: 'Kobi Peretz - Nechmad', artist: 'Kobi Peretz' },
+    { id: 'L7R-yBZ5QYc', title: 'Peer Tasi - Derech Hashalom', artist: 'Peer Tasi' }
   ],
   electronic: [
     { id: 'gCYcHz2k5x0', title: 'Animals', artist: 'Martin Garrix' },

@@ -269,6 +269,18 @@ function revealSong() {
     songTitle.textContent = '';
     songArtist.textContent = '';
     
+    // Get the currently loaded video ID to ensure correlation
+    const currentVideoId = player ? player.getVideoData().video_id : null;
+    
+    // Double check that the currentSong matches the currently playing video
+    if (currentVideoId && currentVideoId !== currentSong.id) {
+        // If there's a mismatch, find the correct song from the current genre
+        const correctSong = songData[selectedGenre].find(song => song.id === currentVideoId);
+        if (correctSong) {
+            currentSong = correctSong;
+        }
+    }
+    
     // Set the current song information
     songTitle.textContent = currentSong.title;
     songArtist.textContent = currentSong.artist;
