@@ -1,3 +1,6 @@
+// Add a simple console log to debug
+console.log("Script loaded");
+
 // Global variables
 let players = [];
 let scores = {};
@@ -7,6 +10,7 @@ let isPlaying = false;
 let isSongRevealed = false;
 let availableSongs = [];
 let player = null;
+let pointAwardedThisRound = false;
 
 // DOM Elements
 const homePage = document.getElementById('home-page');
@@ -16,6 +20,7 @@ const gamePage = document.getElementById('game-page');
 
 // Navigation functions
 document.getElementById('start-game-btn').addEventListener('click', () => {
+    console.log("Start game button clicked");
     homePage.classList.add('hidden');
     playersPage.classList.remove('hidden');
 });
@@ -46,6 +51,7 @@ document.getElementById('add-player-btn').addEventListener('click', () => {
 });
 
 document.getElementById('continue-to-genres-btn').addEventListener('click', () => {
+    console.log("Continue to genres button clicked");
     const playerInputs = document.querySelectorAll('.player-input');
     players = [];
     
@@ -73,83 +79,110 @@ document.getElementById('continue-to-genres-btn').addEventListener('click', () =
 });
 
 // Genre page functionality
-const genreItems = document.querySelectorAll('.genre-item');
-genreItems.forEach(item => {
-    item.addEventListener('click', () => {
-        // Remove selected class from all genres
-        genreItems.forEach(g => {
-            g.classList.remove('border-blue-500', 'bg-blue-50', 'shadow-md');
-            g.classList.add('border-gray-300');
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM fully loaded");
+    
+    // Genre page functionality
+    const genreItems = document.querySelectorAll('.genre-item');
+    console.log("Genre items found:", genreItems.length);
+    
+    genreItems.forEach(item => {
+        item.addEventListener('click', () => {
+            console.log("Genre item clicked:", item.getAttribute('data-genre'));
+            
+            // Remove selected class from all genres
+            genreItems.forEach(g => {
+                g.classList.remove('border-blue-500', 'bg-blue-50', 'shadow-md');
+                g.classList.add('border-gray-300');
+            });
+            
+            // Add selected class to clicked genre
+            item.classList.remove('border-gray-300');
+            item.classList.add('border-blue-500', 'bg-blue-50', 'shadow-md');
+            
+            // Enable start game button
+            const startGameBtn = document.getElementById('start-game-genre-btn');
+            console.log("Start game button found:", startGameBtn !== null);
+            
+            if (startGameBtn) {
+                startGameBtn.disabled = false;
+                startGameBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                startGameBtn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'cursor-pointer');
+                
+                // Store selected genre
+                selectedGenre = item.getAttribute('data-genre');
+                console.log("Selected genre:", selectedGenre);
+            }
         });
-        
-        // Add selected class to clicked genre
-        item.classList.remove('border-gray-300');
-        item.classList.add('border-blue-500', 'bg-blue-50', 'shadow-md');
-        
-        // Enable start game button
-        const startGameBtn = document.getElementById('start-game-genre-btn');
-        startGameBtn.disabled = false;
-        startGameBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-        startGameBtn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'cursor-pointer');
-        
-        // Store selected genre
-        selectedGenre = item.getAttribute('data-genre');
-    });
-});
-
-document.getElementById('start-game-genre-btn').addEventListener('click', () => {
-    if (!selectedGenre) return;
-    
-    // Initialize available songs for the selected genre
-    availableSongs = [...songData[selectedGenre]];
-    
-    // Update genre display
-    document.getElementById('genre-display').textContent = `Genre: ${selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)}`;
-    
-    // Populate scoreboard
-    const scoreboard = document.getElementById('scoreboard');
-    scoreboard.innerHTML = '';
-    
-    players.forEach(player => {
-        const playerDiv = document.createElement('div');
-        playerDiv.className = 'flex justify-between items-center p-3 bg-white rounded shadow';
-        playerDiv.innerHTML = `
-            <span class="font-semibold">${player}</span>
-            <span class="text-xl font-bold">${scores[player] || 0}</span>
-        `;
-        scoreboard.appendChild(playerDiv);
     });
     
-    // Navigate to game page
-    genrePage.classList.add('hidden');
-    gamePage.classList.remove('hidden');
+    const startGameBtn = document.getElementById('start-game-genre-btn');
+    if (startGameBtn) {
+        console.log("Adding event listener to start game button");
+        startGameBtn.addEventListener('click', () => {
+            console.log("Start game genre button clicked, selected genre:", selectedGenre);
+            
+            if (!selectedGenre) {
+                console.log("No genre selected, returning");
+                return;
+            }
+            
+            // Initialize available songs for the selected genre
+            availableSongs = [...songData[selectedGenre]];
+            console.log("Available songs:", availableSongs.length);
+            
+            // Update genre display
+            document.getElementById('genre-display').textContent = `Genre: ${selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)}`;
+            
+            // Populate scoreboard
+            const scoreboard = document.getElementById('scoreboard');
+            scoreboard.innerHTML = '';
+            
+            players.forEach(player => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'scoreboard-item flex justify-between items-center p-3 bg-white rounded shadow';
+                playerDiv.innerHTML = `
+                    <span class="font-semibold">${player}</span>
+                    <span class="text-xl font-bold">${scores[player] || 0}</span>
+                `;
+                scoreboard.appendChild(playerDiv);
+            });
+            
+            // Navigate to game page
+            genrePage.classList.add('hidden');
+            gamePage.classList.remove('hidden');
+        });
+    }
 });
 
 // YouTube API
 let youtubeReady = false;
 function onYouTubeIframeAPIReady() {
+    console.log("YouTube API ready");
     youtubeReady = true;
 }
 
 // Game page functionality
-document.getElementById('next-song-btn').addEventListener('click', selectRandomSong);
-document.getElementById('play-btn').addEventListener('click', playSong);
-document.getElementById('buzzer-btn').addEventListener('click', pauseSong);
-document.getElementById('reveal-btn').addEventListener('click', revealSong);
-document.getElementById('back-to-genres-btn').addEventListener('click', () => {
-    // Stop the song if it's playing
-    if (player) {
-        player.stopVideo();
-    }
-    
-    // Reset game state
-    isPlaying = false;
-    isSongRevealed = false;
-    currentSong = null;
-    
-    // Hide game page and show genre page
-    gamePage.classList.add('hidden');
-    genrePage.classList.remove('hidden');
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('next-song-btn').addEventListener('click', selectRandomSong);
+    document.getElementById('play-btn').addEventListener('click', playSong);
+    document.getElementById('buzzer-btn').addEventListener('click', pauseSong);
+    document.getElementById('reveal-btn').addEventListener('click', revealSong);
+    document.getElementById('back-to-genres-btn').addEventListener('click', () => {
+        // Stop the song if it's playing
+        if (player) {
+            player.stopVideo();
+        }
+        
+        // Reset game state
+        isPlaying = false;
+        isSongRevealed = false;
+        currentSong = null;
+        
+        // Hide game page and show genre page
+        gamePage.classList.add('hidden');
+        genrePage.classList.remove('hidden');
+    });
 });
 
 // Select a random song
@@ -211,10 +244,13 @@ function selectRandomSong() {
 // YouTube player events
 function onPlayerReady(event) {
     // Player is ready
+    console.log("YouTube player ready");
 }
 
 function onPlayerStateChange(event) {
     // 0 = ended, 1 = playing, 2 = paused
+    console.log("Player state changed:", event.data);
+    
     if (event.data === 1) {
         isPlaying = true;
         
@@ -243,6 +279,7 @@ function onPlayerStateChange(event) {
 
 // Play the current song
 function playSong() {
+    console.log("Play song called");
     if (player && currentSong) {
         player.playVideo();
     }
@@ -250,6 +287,7 @@ function playSong() {
 
 // Pause the current song (buzzer functionality)
 function pauseSong() {
+    console.log("Pause song called");
     if (player) {
         player.pauseVideo();
     }
@@ -257,6 +295,7 @@ function pauseSong() {
 
 // Reveal the current song
 function revealSong() {
+    console.log("Reveal song called");
     if (!currentSong) return;
     
     isSongRevealed = true;
@@ -271,12 +310,14 @@ function revealSong() {
     
     // Get the currently loaded video ID to ensure correlation
     const currentVideoId = player ? player.getVideoData().video_id : null;
+    console.log("Current video ID:", currentVideoId, "Expected song ID:", currentSong.id);
     
     // Double check that the currentSong matches the currently playing video
     if (currentVideoId && currentVideoId !== currentSong.id) {
         // If there's a mismatch, find the correct song from the current genre
         const correctSong = songData[selectedGenre].find(song => song.id === currentVideoId);
         if (correctSong) {
+            console.log("Found correct song:", correctSong.title);
             currentSong = correctSong;
         }
     }
@@ -290,6 +331,7 @@ function revealSong() {
 
 // Show add point options
 function showAddPointOptions() {
+    console.log("Show add point options called");
     const addPointContainer = document.getElementById('add-point-container');
     const playerPointsBtns = document.getElementById('player-points-btns');
     
@@ -337,6 +379,7 @@ let pointAwardedThisRound = false;
 
 // Add a point to a player's score
 function addPoint(playerName) {
+    console.log("Add point called for player:", playerName);
     // Check if a point has already been awarded this round
     if (pointAwardedThisRound) {
         // Show a message that only one point can be awarded per round
@@ -379,7 +422,13 @@ function addPoint(playerName) {
 // Space key as buzzer
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space' && isPlaying) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent page scrolling
         pauseSong();
     }
 });
+
+// Load YouTube API
+const tag = document.createElement('script');
+tag.src = 'https://www.youtube.com/iframe_api';
+const firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
