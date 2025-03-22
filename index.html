@@ -6,9 +6,13 @@
     <title>Song Guessing Contest</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+            min-height: 100vh;
+            color: #333;
         }
         .container {
             max-width: 1200px;
@@ -17,6 +21,60 @@
         }
         .hidden {
             display: none;
+        }
+        .genre-item {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .genre-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            transition: all 0.3s ease;
+        }
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .scoreboard-item {
+            transition: all 0.3s ease;
+        }
+        .scoreboard-item:hover {
+            transform: scale(1.03);
+        }
+        .pulse-animation {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -149,9 +207,17 @@
         <!-- Game Page -->
         <div id="game-page" class="hidden flex min-h-screen flex-col items-center p-8">
             <div class="w-full max-w-4xl">
-                <h1 class="text-4xl font-bold text-center mb-8">
-                    Song Guessing Contest
-                </h1>
+                <div class="flex justify-between items-center mb-8">
+                    <h1 class="text-4xl font-bold text-center">
+                        Song Guessing Contest
+                    </h1>
+                    <button
+                        id="back-to-genres-btn"
+                        class="px-4 py-2 rounded-lg font-bold bg-purple-600 hover:bg-purple-700 text-white transition-colors duration-300"
+                    >
+                        Back to Genres
+                    </button>
+                </div>
                 
                 <!-- Scoreboard -->
                 <div class="bg-gray-100 p-6 rounded-lg mb-8">

@@ -136,6 +136,21 @@ document.getElementById('next-song-btn').addEventListener('click', selectRandomS
 document.getElementById('play-btn').addEventListener('click', playSong);
 document.getElementById('buzzer-btn').addEventListener('click', pauseSong);
 document.getElementById('reveal-btn').addEventListener('click', revealSong);
+document.getElementById('back-to-genres-btn').addEventListener('click', () => {
+    // Stop the song if it's playing
+    if (player) {
+        player.stopVideo();
+    }
+    
+    // Reset game state
+    isPlaying = false;
+    isSongRevealed = false;
+    currentSong = null;
+    
+    // Hide game page and show genre page
+    gamePage.classList.add('hidden');
+    genrePage.classList.remove('hidden');
+});
 
 // Select a random song
 function selectRandomSong() {
@@ -153,6 +168,7 @@ function selectRandomSong() {
     // Reset song state
     isPlaying = false;
     isSongRevealed = false;
+    pointAwardedThisRound = false; // Reset point awarded status for new round
     document.getElementById('song-reveal').classList.add('hidden');
     document.getElementById('add-point-container').classList.add('hidden');
     
@@ -245,8 +261,18 @@ function revealSong() {
     
     isSongRevealed = true;
     
-    document.getElementById('song-title').textContent = currentSong.title;
-    document.getElementById('song-artist').textContent = currentSong.artist;
+    // Make sure we're revealing the correct song information
+    const songTitle = document.getElementById('song-title');
+    const songArtist = document.getElementById('song-artist');
+    
+    // Clear previous content first
+    songTitle.textContent = '';
+    songArtist.textContent = '';
+    
+    // Set the current song information
+    songTitle.textContent = currentSong.title;
+    songArtist.textContent = currentSong.artist;
+    
     document.getElementById('song-reveal').classList.remove('hidden');
 }
 
@@ -256,6 +282,9 @@ function showAddPointOptions() {
     const playerPointsBtns = document.getElementById('player-points-btns');
     
     playerPointsBtns.innerHTML = '';
+    
+    // Add confetti effect to celebrate guessing
+    createConfetti();
     
     players.forEach(player => {
         const btn = document.createElement('button');
@@ -269,17 +298,64 @@ function showAddPointOptions() {
     addPointContainer.classList.remove('hidden');
 }
 
+// Create confetti effect
+function createConfetti() {
+    const container = document.querySelector('.container');
+    const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f'];
+    
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = Math.random() * 10 + 5 + 'px';
+        confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+        container.appendChild(confetti);
+        
+        // Remove confetti after animation
+        setTimeout(() => {
+            confetti.remove();
+        }, 5000);
+    }
+}
+
+// Track if a point has been awarded for the current round
+let pointAwardedThisRound = false;
+
 // Add a point to a player's score
 function addPoint(playerName) {
-    scores[playerName] = (scores[playerName] || 0) + 1;
+    // Check if a point has already been awarded this round
+    if (pointAwardedThisRound) {
+        // Show a message that only one point can be awarded per round
+        alert('Only one point can be awarded per round!');
+        return;
+    }
     
-    // Update scoreboard
+    // Award the point and mark this round as having a point awarded
+    scores[playerName] = (scores[playerName] || 0) + 1;
+    pointAwardedThisRound = true;
+    
+    // Disable all point buttons after awarding a point
+    const pointButtons = document.querySelectorAll('#player-points-btns button');
+    pointButtons.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+    });
+    
+    // Update scoreboard with animation for the player who got the point
     const scoreboard = document.getElementById('scoreboard');
     scoreboard.innerHTML = '';
     
     players.forEach(player => {
         const playerDiv = document.createElement('div');
-        playerDiv.className = 'flex justify-between items-center p-3 bg-white rounded shadow';
+        playerDiv.className = 'scoreboard-item flex justify-between items-center p-3 bg-white rounded shadow';
+        
+        // Add pulse animation to the player who got the point
+        if (player === playerName) {
+            playerDiv.classList.add('pulse-animation');
+        }
+        
         playerDiv.innerHTML = `
             <span class="font-semibold">${player}</span>
             <span class="text-xl font-bold">${scores[player] || 0}</span>
