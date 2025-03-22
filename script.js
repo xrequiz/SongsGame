@@ -7,6 +7,7 @@ let isPlaying = false;
 let isSongRevealed = false;
 let availableSongs = [];
 let player = null;
+let pointAwardedThisRound = false;
 
 // DOM Elements
 const homePage = document.getElementById('home-page');
@@ -112,7 +113,7 @@ document.getElementById('start-game-genre-btn').addEventListener('click', () => 
     
     players.forEach(player => {
         const playerDiv = document.createElement('div');
-        playerDiv.className = 'flex justify-between items-center p-3 bg-white rounded shadow';
+        playerDiv.className = 'scoreboard-item flex justify-between items-center p-3 bg-white rounded shadow';
         playerDiv.innerHTML = `
             <span class="font-semibold">${player}</span>
             <span class="text-xl font-bold">${scores[player] || 0}</span>
@@ -379,7 +380,13 @@ function addPoint(playerName) {
 // Space key as buzzer
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space' && isPlaying) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent page scrolling
         pauseSong();
     }
 });
+
+// Load YouTube API
+const tag = document.createElement('script');
+tag.src = 'https://www.youtube.com/iframe_api';
+const firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);

@@ -253,53 +253,46 @@
                                 
                                 <button
                                     id="reveal-btn"
-                                    class="px-4 py-2 rounded font-bold bg-blue-500 hover:bg-blue-600 text-white"
+                                    class="px-4 py-2 rounded font-bold bg-yellow-500 hover:bg-yellow-600 text-white"
                                 >
                                     Reveal Song
                                 </button>
+                                
+                                <button
+                                    id="next-song-btn"
+                                    class="px-4 py-2 rounded font-bold bg-blue-500 hover:bg-blue-600 text-white"
+                                >
+                                    Next Song
+                                </button>
                             </div>
                             
-                            <div id="song-reveal" class="bg-blue-50 p-4 rounded-lg mb-4 hidden">
-                                <h3 id="song-title" class="text-xl font-bold"></h3>
-                                <p id="song-artist" class="text-gray-700"></p>
+                            <div id="song-reveal" class="mt-6 p-4 bg-gray-100 rounded-lg text-center hidden">
+                                <h3 class="text-xl font-bold mb-2">Song Revealed:</h3>
+                                <p id="song-title" class="text-lg font-semibold"></p>
+                                <p id="song-artist" class="text-md text-gray-600"></p>
                             </div>
                             
-                            <div id="add-point-container" class="mt-4 hidden">
-                                <h3 class="text-lg font-semibold mb-2">Add point to:</h3>
-                                <div id="player-points-btns" class="flex flex-wrap gap-2">
-                                    <!-- Player point buttons will be added dynamically -->
+                            <div id="add-point-container" class="mt-6 p-4 bg-gray-100 rounded-lg text-center hidden">
+                                <h3 class="text-xl font-bold mb-2">Add Point To:</h3>
+                                <div id="player-points-btns" class="flex flex-wrap gap-2 justify-center">
+                                    <!-- Player buttons will be added dynamically -->
                                 </div>
                             </div>
                         </div>
                         
-                        <p id="game-instruction" class="text-gray-600 mb-4">Click "Next Song" to start the game</p>
-                        
-                        <button
-                            id="next-song-btn"
-                            class="mt-6 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg"
-                        >
-                            Next Song
-                        </button>
+                        <p id="game-instruction" class="text-center text-lg mt-4">
+                            Click "Next Song" to start playing a random song from the selected genre.
+                        </p>
                     </div>
                     
-                    <div class="text-center text-sm text-gray-500">
-                        <p>Press the space bar to use the buzzer when you recognize the song!</p>
-                    </div>
+                    <!-- YouTube Player (hidden) -->
+                    <div id="youtube-player"></div>
                 </div>
-                
-                <!-- YouTube Player -->
-                <div id="youtube-player" class="hidden"></div>
             </div>
         </div>
     </div>
-
-    <!-- YouTube API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
     
-    <!-- Song Data -->
     <script src="songs.js"></script>
-    
-    <!-- Main Script -->
     <script src="script.js"></script>
 </body>
 </html>
